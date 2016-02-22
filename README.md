@@ -1,30 +1,28 @@
-spark-whoops
+Spark Debug Screen
 =====================
-Better error pages for the [Spark Java micro-framework](http://sparkjava.com/).
+Error pages for the [Spark Java micro-framework](http://sparkjava.com/).
 
-![image](http://i.imgur.com/IjGA0xE.png)
+![image](http://i.imgur.com/kslpu6B.png)
 
 ## Usage:
 To utilize:
 ```java
-package edu.rice.mschurr.demo;
+package spark.debug;
 
-import spark.Spark;
-import edu.rice.mschurr.spark_whoops.WhoopsHandler;
+import static spark.Spark.get;
+import static spark.Spark.port;
+import static spark.debug.DebugScreen.enableDebugScreen;
 
-public class WhoopsExample {
-  public static void main(String[] args) {
-    Spark.port(8080);
+public class DebugScreenExample {
+    public static void main(String[] args) {
 
-    Spark.get("/except", (req, res) -> {
-      throw new Exception("Testing Handler!");
-    });
-
-    // Add this to enable Whoops! error pages:
-    Spark.exception(Exception.class, new WhoopsHandler());
-
-    Spark.init();
-  }
+        get("*", (req, res) -> {
+            throw new Exception("Exceptions everywhere!");
+        });
+        
+        enableDebugScreen(); //just add this to your project to enable the debug screen
+        
+    }
 }
 ```
 
@@ -39,7 +37,7 @@ Coming soon (hopefully).
 ```java
 
 // Subclass the handler:
-class MyWhoopsHandler extends WhoopsHandler {
+class MyDebugScreen extends DebugScreen {
   @Override
   protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request, Exception exception) {
     super.installTables(tables, request, exception);
@@ -50,17 +48,18 @@ class MyWhoopsHandler extends WhoopsHandler {
 }
 
 // When installing the exception handler, install yours instead:
-Spark.exception(Exception.class, new MyWhoopsHandler());
+Spark.exception(Exception.class, new MyDebugScreen());
 
 ```
 
 **To change the search path for locating Java source files:**
 
-By default Whoops looks within the folders `src/main/java` and `src/test/java` in the current working directory (if they exist). If you have changed the working directory, obviously this approach will not work. You can specify different search directories:
+By default DebugScreen looks within the folders `src/main/java` and `src/test/java` in the current working directory (if they exist). If you have changed the working directory, obviously this approach will not work. You can specify different search directories:
 
 ```java
-Spark.exception(Exception.class, new WhoopsHandler(
-    ImmutableList.of(new FileSearchSourceLocator(new File("/path/to/source/code")))));
+Spark.exception(Exception.class, new DebugScreen(
+    ImmutableList.of(new FileSearchSourceLocator(new File("/path/to/source/code")))
+));
 ```
 
 You can specify multiple locators in the list (later ones are used as fallbacks if earlier ones cannot find a file). If this is still not specific enough for you, you can implement your own `SourceLocator` to find the files and provide that to the handler.
