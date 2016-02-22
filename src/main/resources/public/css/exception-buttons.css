@@ -5,6 +5,12 @@
     width: 125px;
 }
 
+@media (max-width: 768px) {
+    #exc-btns {
+        display: none;
+    }
+}
+
 #copy-button, #google-button {
     width: 125px;
     cursor: pointer;

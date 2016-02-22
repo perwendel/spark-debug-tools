@@ -1,0 +1,188 @@
+.frame-code {
+    padding: 10px;
+    background: #303030;
+    display: none;
+    margin-bottom: 20px;
+}
+
+@media (min-width: 1000px) {
+    .frame-code {
+        padding: 20px 40px;
+    }
+}
+
+.frame-code.active {
+    display: block;
+}
+
+.frame-code .frame-file {
+    color: #a29d9d;
+    padding: 12px 6px;
+
+    border-bottom: none;
+}
+
+.frame-comments {
+    border-top: none;
+    margin-top: 15px;
+    font-size: 12px;
+}
+
+.frame-comments.empty:before {
+    content: "No comments for this stack frame.";
+    font-weight: 300;
+    color: #a29d9d;
+}
+
+.frame-comment {
+    padding: 10px;
+    color: #e3e3e3;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, .05);
+}
+
+.frame-comment a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.frame-comment a:hover {
+    color: #e3b27f;
+}
+
+.frame-comment:not(:last-child) {
+    border-bottom: 1px dotted rgba(0, 0, 0, .3);
+}
+
+.frame-comment-context {
+    font-size: 10px;
+    color: white;
+}
+
+.code-block {
+    padding: 15px;
+    margin: 0;
+    border-radius: 6px;
+    box-shadow: 0 3px 0 rgba(0, 0, 0, .05),
+    0 10px 30px rgba(0, 0, 0, .05),
+    inset 0 0 1px 0 rgba(255, 255, 255, .07);
+}
+
+.linenums {
+    margin: 0;
+    padding: 0;
+    list-style: inside decimal-leading-zero;
+}
+
+.linenums li {
+    color: #A5A5A5;
+}
+
+.linenums li {
+    white-space: pre;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.linenums li.current {
+    padding: 2px 0;
+    background: rgba(255, 100, 100, .07);
+}
+
+.linenums li.current.active {
+    background: rgba(255, 100, 100, .17);
+}
+
+pre .str, code .str {
+    color: #BCD42A;
+}
+
+/* string  */
+pre .kwd, code .kwd {
+    color: #4bb1b1;
+    font-weight: bold;
+}
+
+/* keyword*/
+pre .com, code .com {
+    color: #888;
+    font-weight: bold;
+}
+
+/* comment */
+pre .typ, code .typ {
+    color: #ef7c61;
+}
+
+/* type  */
+pre .lit, code .lit {
+    color: #BCD42A;
+}
+
+/* literal */
+pre .pun, code .pun {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* punctuation  */
+pre .pln, code .pln {
+    color: #e9e4e5;
+}
+
+/* plaintext  */
+pre .tag, code .tag {
+    color: #4bb1b1;
+}
+
+/* html/xml tag  */
+pre .htm, code .htm {
+    color: #dda0dd;
+}
+
+/* html tag */
+pre .xsl, code .xsl {
+    color: #d0a0d0;
+}
+
+/* xslt tag */
+pre .atn, code .atn {
+    color: #ef7c61;
+    font-weight: normal;
+}
+
+/* html/xml attribute name */
+pre .atv, code .atv {
+    color: #bcd42a;
+}
+
+/* html/xml attribute value  */
+pre .dec, code .dec {
+    color: #606;
+}
+
+/* decimal  */
+pre.prettyprint, code.prettyprint {
+    font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
+    background: #333;
+    color: #e9e4e5;
+}
+
+pre.prettyprint {
+    white-space: pre-wrap;
+}
+
+pre.prettyprint a, code.prettyprint a {
+    text-decoration: none;
+}
+
+pre.sf-dump {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+@media (max-width: 768px) {
+    pre {
+        font-size: 10px;
+    }
+}

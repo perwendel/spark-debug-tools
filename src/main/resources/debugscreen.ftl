@@ -4,8 +4,11 @@
 <head>
     <title>${basic_type}</title>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#CC2222">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#CC2222">
     <style type="text/css"><#include "/public/css/main.css"></style>
-    <style type="text/css"><#include "/public/css/code-highlight.css"></style>
+    <style type="text/css"><#include "/public/css/code.css"></style>
     <style type="text/css"><#include "/public/css/exception-buttons.css"></style>
 </head>
 <body>
@@ -98,8 +101,8 @@
                                     </thead>
                                     <#list data?keys as k>
                                         <tr>
-                                            <td>${k}</td>
-                                            <td>${data[k]}</td>
+                                            <td><div>${k}</div></td>
+                                            <td><div>${data[k]}</div></td>
                                         </tr>
                                     </#list>
                                 </table>

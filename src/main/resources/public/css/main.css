@@ -211,6 +211,12 @@ a {
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .left-panel header {
+        padding: 15px 25px;
+    }
+}
+
 .exception {
     position: relative;
 }
@@ -320,87 +326,6 @@ a {
     content: ":";
 }
 
-.frame-code {
-    padding: 5px;
-    background: #303030;
-    display: none;
-}
-
-.frame-code.active {
-    display: block;
-}
-
-.frame-code .frame-file {
-    color: #a29d9d;
-    padding: 12px 6px;
-
-    border-bottom: none;
-}
-
-.code-block {
-    padding: 10px;
-    margin: 0;
-    border-radius: 6px;
-    box-shadow: 0 3px 0 rgba(0, 0, 0, .05),
-    0 10px 30px rgba(0, 0, 0, .05),
-    inset 0 0 1px 0 rgba(255, 255, 255, .07);
-}
-
-.linenums {
-    margin: 0;
-    margin-left: 10px;
-}
-
-.linenums li {
-    color: #A5A5A5;
-}
-
-.linenums li.current {
-    padding: 2px 0;
-    background: rgba(255, 100, 100, .07);
-}
-
-.linenums li.current.active {
-    background: rgba(255, 100, 100, .17);
-}
-
-.frame-comments {
-    border-top: none;
-    margin-top: 15px;
-    font-size: 12px;
-}
-
-.frame-comments.empty:before {
-    content: "No comments for this stack frame.";
-    font-weight: 300;
-    color: #a29d9d;
-}
-
-.frame-comment {
-    padding: 10px;
-    color: #e3e3e3;
-    border-radius: 6px;
-    background-color: rgba(255, 255, 255, .05);
-}
-
-.frame-comment a {
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.frame-comment a:hover {
-    color: #e3b27f;
-}
-
-.frame-comment:not(:last-child) {
-    border-bottom: 1px dotted rgba(0, 0, 0, .3);
-}
-
-.frame-comment-context {
-    font-size: 10px;
-    color: white;
-}
-
 .details {
     padding: 0 30px;
 }
@@ -451,6 +376,11 @@ div.data-table {
     padding: 5px;
 }
 
+.data-table td div {
+    max-height: 44px;
+    overflow: hidden;
+}
+
 .data-table tr:first-of-type td {
     border: 0;
 }
@@ -491,11 +421,6 @@ div.data-table {
 
 /* Expand the spacing in the details section */
 @media (min-width: 1000px) {
-    .frame-code {
-        padding: 20px 40px;
-        margin-bottom: 20px;
-    }
-
     .frames-container {
         margin: 8px;
     }
