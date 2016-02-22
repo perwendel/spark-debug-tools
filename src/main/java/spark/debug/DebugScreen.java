@@ -20,6 +20,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 
 import static spark.Spark.exception;
 
@@ -66,7 +67,7 @@ public class DebugScreen implements ExceptionHandler {
             model.put("type", exception.getClass().getCanonicalName());
 
             LinkedHashMap<String, Map<String, ? extends Object>> tables = new LinkedHashMap<>();
-            installTables(tables, request, exception);
+            installTables(tables, request);
             model.put("tables", tables);
 
             response.body(templateEngine.render(Spark.modelAndView(model, "debugscreen.ftl")));
@@ -89,63 +90,43 @@ public class DebugScreen implements ExceptionHandler {
     /**
      * Install any tables you want to be shown in environment details.
      *
-     * @param tables
+     * @param tables the map containing the tables to display on the debug screen
      */
-    protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables,
-                                 Request request,
-                                 Exception exception) {
+    protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request) {
+        tables.put("Headers", Maps.asMap(request.headers(), request::headers));
+        tables.put("Spark Request properties", getRequestInfo(request));
+        tables.put("Route Parameters", request.params());
+        tables.put("Query Parameters", Maps.asMap(request.queryParams(), request::queryParams));
+        tables.put("Session Attributes", Maps.asMap(request.session().attributes(), request.session()::attribute));
+        tables.put("Request Attributes", Maps.asMap(request.attributes(), request::attribute));
+        tables.put("Cookies", request.cookies());
+        tables.put("Environment", getEnvironmentInfo());
+    }
 
+    private LinkedHashMap<String, Object> getEnvironmentInfo() {
+        LinkedHashMap<String, Object> environment = new LinkedHashMap<>();
+        environment.put("Thread ID", Thread.currentThread().getId());
+        return environment;
+    }
+
+    private LinkedHashMap<String, Object> getRequestInfo(Request request) {
         LinkedHashMap<String, Object> req = new LinkedHashMap<>();
-        tables.put("Request", req);
-        req.put("User-Agent", Optional.fromNullable(request.userAgent()).or("-"));
-        req.put("URI", Optional.fromNullable(request.uri()).or("-"));
         req.put("URL", Optional.fromNullable(request.url()).or("-"));
-        req.put("Query String", Optional.fromNullable(request.queryString()).or("-"));
         req.put("Scheme", Optional.fromNullable(request.scheme()).or("-"));
         req.put("Method", Optional.fromNullable(request.requestMethod()).or("-"));
         req.put("Protocol", Optional.fromNullable(request.protocol()).or("-"));
-        req.put("Port", Optional.fromNullable(Integer.toString(request.port())).or("-"));
-        req.put("Path Info", Optional.fromNullable(request.pathInfo()).or("-"));
         req.put("Remote IP", Optional.fromNullable(request.ip()).or("-"));
-        req.put("Host", Optional.fromNullable(request.host()).or("-"));
-        req.put("Content Type", Optional.fromNullable(request.contentType()).or("-"));
-        req.put("Content Length", request.contentLength() == -1 ? "-" : Integer.toString(request.contentLength()));
-        req.put("Context Path", Optional.fromNullable(request.contextPath()).or("-"));
-        req.put("Body", Optional.fromNullable(request.body()).or("-"));
-
-        tables.put("Route Parameters", request.params());
-
-        LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
-        tables.put("Query Parameters", queryParams);
-        for (String s : request.queryParams()) {
-            queryParams.put(s, request.queryParams(s));
-        }
-
-        LinkedHashMap<String, Object> requestAttributes = new LinkedHashMap<>();
-        tables.put("Request Attributes", requestAttributes);
-        for (String attr : request.attributes()) {
-            requestAttributes.put(attr, request.attribute(attr).toString());
-        }
-
-        LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
-        tables.put("Request Headers", headers);
-        for (String header : request.headers()) {
-            if (!header.equals("Cookie")) {
-                headers.put(header, request.headers(header));
-            }
-        }
-
-        LinkedHashMap<String, Object> session = new LinkedHashMap<>();
-        tables.put("Session", session);
-        for (String s : request.session().attributes()) {
-            session.put(s, request.session().attribute(s).toString());
-        }
-
-        tables.put("Cookies", request.cookies());
-
-        LinkedHashMap<String, Object> environment = new LinkedHashMap<>();
-        tables.put("Environment", environment);
-        environment.put("Thread ID", Thread.currentThread().getId());
+        //req.put("Path Info", Optional.fromNullable(request.pathInfo()).or("-"));
+        //req.put("Query String", Optional.fromNullable(request.queryString()).or("-"));
+        //req.put("Host", Optional.fromNullable(request.host()).or("-"));
+        //req.put("Port", Optional.fromNullable(Integer.toString(request.port())).or("-"));
+        //req.put("URI", Optional.fromNullable(request.uri()).or("-"));
+        //req.put("Content Type", Optional.fromNullable(request.contentType()).or("-"));
+        //req.put("Content Length", request.contentLength() == -1 ? "-" : Integer.toString(request.contentLength()));
+        //req.put("Context Path", Optional.fromNullable(request.contextPath()).or("-"));
+        //req.put("Body", Optional.fromNullable(request.body()).or("-"));
+        //req.put("User-Agent", Optional.fromNullable(request.userAgent()).or("-"));
+        return req;
     }
 
     /**
@@ -154,7 +135,7 @@ public class DebugScreen implements ExceptionHandler {
      * @param e An exception.
      * @return A view model for the frames in the exception.
      */
-    private final List<Map<String, Object>> parseFrames(Exception e) {
+    private List<Map<String, Object>> parseFrames(Exception e) {
         ImmutableList.Builder<Map<String, Object>> frames = ImmutableList.builder();
 
         for (StackTraceElement frame : e.getStackTrace()) {
@@ -170,7 +151,7 @@ public class DebugScreen implements ExceptionHandler {
      * @param sframe A stack trace frame.
      * @return A view model for the given frame in the template.
      */
-    private final Map<String, Object> parseFrame(StackTraceElement sframe) {
+    private Map<String, Object> parseFrame(StackTraceElement sframe) {
         ImmutableMap.Builder<String, Object> frame = ImmutableMap.builder();
         frame.put("file", Optional.fromNullable(sframe.getFileName()).or("<#unknown>"));
         frame.put("class", Optional.fromNullable(sframe.getClassName()).or(""));
@@ -194,12 +175,12 @@ public class DebugScreen implements ExceptionHandler {
 
         if (codeLines.isPresent()) {
             // Write the starting line number (1-indexed).
-            frame.put("code_start",
-                      Iterables.reduce(codeLines.get().keySet(), Integer.MAX_VALUE, (a, i) -> Math.min(a, i)) + 1);
+            frame.put("code_start", Iterables.reduce(codeLines.get().keySet(), Integer.MAX_VALUE, Math::min) + 1);
 
             // Write the code as a single string, replacing empty lines with a " ".
-            frame.put("code", Joiner.on("\n").join(Iterables.map(codeLines.get().values(), (x) ->
-                    x.length() == 0 ? " " : x)));
+            frame.put("code", Joiner.on("\n").join(
+                    Iterables.map(codeLines.get().values(), (x) -> x.length() == 0 ? " " : x))
+            );
 
             // Write the canonical path.
             try {
@@ -220,7 +201,7 @@ public class DebugScreen implements ExceptionHandler {
      * @param frame A stack trace frame.
      * @return An optional map of line numbers to the content of the lines (not terminated with \n).
      */
-    private final Optional<Map<Integer, String>> fetchFileLines(Optional<File> file, StackTraceElement frame) {
+    private Optional<Map<Integer, String>> fetchFileLines(Optional<File> file, StackTraceElement frame) {
         // If no line number is given or no file exists, we can't fetch lines.
         if (!file.isPresent() || frame.getLineNumber() == -1) {
             return Optional.absent();
