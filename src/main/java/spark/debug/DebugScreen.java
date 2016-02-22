@@ -81,7 +81,7 @@ public class DebugScreen implements ExceptionHandler {
                             + "  <body>"
                             + "    <h1>Caught Exception:</h1>"
                             + "    <pre>" + ExceptionUtils.getStackTrace(exception) + "</pre>"
-                            + "    <h1>Caught Exception Rendering Whoops! Pretty Error Page:</h1>"
+                            + "    <h1>Caught Exception Rendering DebugScreen:</h1>"
                             + "    <pre>" + ExceptionUtils.getStackTrace(e) + "</pre>"
                             + "  </body>"
                             + "</html>"
