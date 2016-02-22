@@ -83,7 +83,6 @@
                 </#list>
             </div>
             <div class="details">
-                <h2>Environment Details:</h2>
                 <div class="data-table-container" id="data-tables">
                     <#list tables?keys as label>
                         <#assign data = tables[label]>
