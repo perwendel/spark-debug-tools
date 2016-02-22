@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Whoops! - ${basic_type}</title>
+    <title>${basic_type}</title>
     <meta charset="utf-8"/>
     <style type="text/css"><#include "/public/css/main.css"></style>
     <style type="text/css"><#include "/public/css/code-highlight.css"></style>

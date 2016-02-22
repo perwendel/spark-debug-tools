@@ -97,9 +97,6 @@ public class DebugScreen implements ExceptionHandler {
     protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables,
                                  Request request,
                                  Exception exception) {
-        LinkedHashMap<String, Object> environment = new LinkedHashMap<>();
-        tables.put("Environment", environment);
-        environment.put("Thread ID", Thread.currentThread().getId());
 
         LinkedHashMap<String, Object> req = new LinkedHashMap<>();
         tables.put("Request", req);
@@ -125,21 +122,13 @@ public class DebugScreen implements ExceptionHandler {
             requestAttributes.put(attr, request.attribute(attr).toString());
         }
 
-        LinkedHashMap<String, Object> session = new LinkedHashMap<>();
-        tables.put("Session", session);
-        for (String s : request.session().attributes()) {
-            session.put(s, request.session().attribute(s).toString());
-        }
+        tables.put("Route Parameters", request.params());
 
         LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
         tables.put("Query Parameters", queryParams);
         for (String s : request.queryParams()) {
             queryParams.put(s, request.queryParams(s));
         }
-
-        tables.put("Cookies", request.cookies());
-
-        tables.put("Route Parameters", request.params());
 
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
         tables.put("Request Headers", headers);
@@ -148,6 +137,18 @@ public class DebugScreen implements ExceptionHandler {
                 headers.put(header, request.headers(header));
             }
         }
+
+        LinkedHashMap<String, Object> session = new LinkedHashMap<>();
+        tables.put("Session", session);
+        for (String s : request.session().attributes()) {
+            session.put(s, request.session().attribute(s).toString());
+        }
+
+        tables.put("Cookies", request.cookies());
+
+        LinkedHashMap<String, Object> environment = new LinkedHashMap<>();
+        tables.put("Environment", environment);
+        environment.put("Thread ID", Thread.currentThread().getId());
     }
 
     /**
