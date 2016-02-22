@@ -4,7 +4,7 @@
 <head>
     <title>Whoops! - ${basic_type}</title>
     <meta charset="utf-8"/>
-    <style type="text/css"><#include "/public/css/whoops.css"></style>
+    <style type="text/css"><#include "/public/css/main.css"></style>
     <style type="text/css"><#include "/public/css/code-highlight.css"></style>
     <style type="text/css"><#include "/public/css/exception-buttons.css"></style>
 </head>
@@ -113,7 +113,7 @@
                 <!--<div class="data-table-container" id="handlers">
                   <label>Registered Handlers</label>
                     <div class="handler active">
-                      1. WhoopsExceptionHandler
+                      1. SomeHandler
                     </div>
                 </div>-->
             </div>
@@ -129,7 +129,7 @@
 <script><#include "/public/js/lib/zepto.min.js"></script>
 <script><#include "/public/js/lib/clipboard.min.js"></script>
 <script><#include "/public/js/lib/prettify.min.js"></script>
-<script><#include "/public/js/whoops.base.js"></script>
+<script><#include "/public/js/main.js"></script>
 </body>
 </html>
 </#escape>

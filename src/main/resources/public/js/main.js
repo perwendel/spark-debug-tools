@@ -79,9 +79,9 @@ Zepto(function ($) {
         return actionMsg;
     }
 
-    $("#google-button").click(function(e) {
+    $("#google-button").click(function (e) {
         var exception = e.currentTarget.getAttribute("data-google-query");
-        window.open("https://www.google.com/?#q="+exception);
+        window.open("https://www.google.com/?#q=" + exception);
     });
 
     $(document).on('keydown', function (e) {
