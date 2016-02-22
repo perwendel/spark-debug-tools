@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
 import spark.ExceptionHandler;
@@ -26,7 +24,6 @@ import com.google.common.collect.ImmutableMap;
 import static spark.Spark.exception;
 
 public class DebugScreen implements ExceptionHandler {
-    protected final static Logger logger = LoggerFactory.getLogger(DebugScreen.class);
 
     protected final FreeMarkerEngine templateEngine;
     protected final Configuration templateConfig;
@@ -51,7 +48,7 @@ public class DebugScreen implements ExceptionHandler {
         this.sourceLocators = sourceLocators;
     }
 
-    static void enableDebugScreen() {
+    public static void enableDebugScreen() {
         exception(Exception.class, new DebugScreen());
     }
 
@@ -116,18 +113,18 @@ public class DebugScreen implements ExceptionHandler {
         req.put("Context Path", Optional.fromNullable(request.contextPath()).or("-"));
         req.put("Body", Optional.fromNullable(request.body()).or("-"));
 
-        LinkedHashMap<String, Object> requestAttributes = new LinkedHashMap<>();
-        tables.put("Request Attributes", requestAttributes);
-        for (String attr : request.attributes()) {
-            requestAttributes.put(attr, request.attribute(attr).toString());
-        }
-
         tables.put("Route Parameters", request.params());
 
         LinkedHashMap<String, Object> queryParams = new LinkedHashMap<>();
         tables.put("Query Parameters", queryParams);
         for (String s : request.queryParams()) {
             queryParams.put(s, request.queryParams(s));
+        }
+
+        LinkedHashMap<String, Object> requestAttributes = new LinkedHashMap<>();
+        tables.put("Request Attributes", requestAttributes);
+        for (String attr : request.attributes()) {
+            requestAttributes.put(attr, request.attribute(attr).toString());
         }
 
         LinkedHashMap<String, Object> headers = new LinkedHashMap<>();
