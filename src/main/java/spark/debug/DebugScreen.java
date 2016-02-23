@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -20,7 +21,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import static spark.Spark.exception;
 
@@ -93,12 +93,12 @@ public class DebugScreen implements ExceptionHandler {
      * @param tables the map containing the tables to display on the debug screen
      */
     protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request) {
-        tables.put("Headers", Maps.asMap(request.headers(), request::headers));
+        tables.put("Headers", request.headers().stream().collect(Collectors.toMap(h -> h, request::headers)));
         tables.put("Spark Request properties", getRequestInfo(request));
         tables.put("Route Parameters", request.params());
-        tables.put("Query Parameters", Maps.asMap(request.queryParams(), request::queryParams));
-        tables.put("Session Attributes", Maps.asMap(request.session().attributes(), request.session()::attribute));
-        tables.put("Request Attributes", Maps.asMap(request.attributes(), request::attribute));
+        tables.put("Query Parameters", request.queryParams().stream().collect(Collectors.toMap(p -> p, request::queryParams)));
+        tables.put("Session Attributes", request.session().attributes().stream().collect(Collectors.toMap(a -> a, request.session()::attribute)));
+        tables.put("Request Attributes", request.attributes().stream().collect(Collectors.toMap(a -> a, request::attribute)));
         tables.put("Cookies", request.cookies());
         tables.put("Environment", getEnvironmentInfo());
     }
