@@ -178,28 +178,6 @@ a {
     background: #fafafa;
 }
 
-@media (max-width: 768px) {
-    .container {
-        overflow: auto;
-    }
-
-    .left-panel {
-        height: auto;
-        float: left;
-        width: 100%;
-    }
-
-    .frames-container, .frames-description {
-        display: none;
-    }
-
-    .details-container {
-        height: auto;
-        float: left;
-        width: 100%;
-    }
-}
-
 /* BEGIN LEFT PANEL HEADER */
 
 .left-panel header {
@@ -209,12 +187,6 @@ a {
     padding: 35px 30px;
     max-height: 180px;
     overflow: hidden;
-}
-
-@media (max-width: 768px) {
-    .left-panel header {
-        padding: 15px 25px;
-    }
 }
 
 .exception {
@@ -417,7 +389,30 @@ div.data-table {
     font: 14px "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
 }
 
-/* == Media queries */
+@media (max-width: 768px) {
+    .container {
+        overflow: auto;
+    }
+    .left-panel {
+        height: auto;
+        float: left;
+        width: 100%;
+    }
+    .frames-container, .frames-description {
+        display: none;
+    }
+    .details {
+        padding: 0 15px;
+    }
+    .details-container {
+        height: auto;
+        float: left;
+        width: 100%;
+    }
+    .left-panel header {
+        padding: 15px 25px;
+    }
+}
 
 /* Expand the spacing in the details section */
 @media (min-width: 1000px) {

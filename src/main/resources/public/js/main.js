@@ -2,6 +2,10 @@ Zepto(function ($) {
 
     prettyPrint();
 
+    setTimeout(function() {
+        $("#star-frame").attr("src", "https://ghbtns.com/github-btn.html?user=perwendel&repo=spark&type=star&count=true").css("width", "120px");
+    }, 1000);
+
     var $frameContainer = $('.frames-container');
     var $container = $('.details-container');
     var $activeLine = $frameContainer.find('.frame.active');

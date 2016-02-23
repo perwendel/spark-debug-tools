@@ -18,7 +18,6 @@
 .frame-code .frame-file {
     color: #a29d9d;
     padding: 12px 6px;
-
     border-bottom: none;
 }
 
@@ -75,89 +74,106 @@
 }
 
 .linenums li {
-    color: #A5A5A5;
-}
-
-.linenums li {
     white-space: pre;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: #666;
+    padding: 0 2px;
 }
 
 .linenums li.current {
-    padding: 2px 0;
+    color: #888;
+    padding: 2px;
     background: rgba(255, 100, 100, .07);
+    animation: mild-flash 300ms ease-in-out;
+    animation-delay: 100ms;
 }
 
 .linenums li.current.active {
+    color: #999;
     background: rgba(255, 100, 100, .17);
+    animation: flash 300ms ease-in-out;
+    animation-delay: 100ms;
 }
 
-pre .str, code .str {
-    color: #BCD42A;
+@keyframes flash {
+    0%   {background: rgba(255, 100, 100, .17); }
+    50%  {background: rgba(255, 100, 100, .30); }
+    100% {background: rgba(255, 100, 100, .17); }
+}
+
+@keyframes mild-flash {
+    0%   {background: rgba(255, 100, 100, .07); }
+    50%  {background: rgba(255, 100, 100, .12); }
+    100% {background: rgba(255, 100, 100, .07); }
+}
+
+pre .str {
+    color: #83d443;
 }
 
 /* string  */
-pre .kwd, code .kwd {
+pre .kwd {
     color: #4bb1b1;
     font-weight: bold;
 }
 
 /* keyword*/
-pre .com, code .com {
+pre .com {
     color: #888;
     font-weight: bold;
 }
 
 /* comment */
-pre .typ, code .typ {
-    color: #ef7c61;
+pre .typ {
+    /*color: #ef7c61;*/
+    color: #e9e4e5;
 }
 
 /* type  */
-pre .lit, code .lit {
-    color: #BCD42A;
+pre .lit {
+    color: #83d443;
 }
 
-/* literal */
-pre .pun, code .pun {
+/* punctuation  */
+pre .pun {
     color: #fff;
     font-weight: bold;
 }
 
-/* punctuation  */
-pre .pln, code .pln {
+/* literal */
+pre .pln {
     color: #e9e4e5;
 }
 
 /* plaintext  */
-pre .tag, code .tag {
+pre .tag {
     color: #4bb1b1;
 }
 
 /* html/xml tag  */
-pre .htm, code .htm {
+pre .htm {
     color: #dda0dd;
 }
 
 /* html tag */
-pre .xsl, code .xsl {
+pre .xsl {
     color: #d0a0d0;
 }
 
 /* xslt tag */
-pre .atn, code .atn {
+pre .atn {
     color: #ef7c61;
     font-weight: normal;
 }
 
 /* html/xml attribute name */
-pre .atv, code .atv {
+pre .atv {
     color: #bcd42a;
 }
 
 /* html/xml attribute value  */
-pre .dec, code .dec {
+pre .dec {
     color: #606;
 }
 
