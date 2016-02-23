@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -93,14 +95,20 @@ public class DebugScreen implements ExceptionHandler {
      * @param tables the map containing the tables to display on the debug screen
      */
     protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request) {
-        tables.put("Headers", request.headers().stream().collect(Collectors.toMap(h -> h, request::headers)));
+        tables.put("Headers", setToLinkedHashMap(request.headers(), h -> h, request::headers));
         tables.put("Spark Request properties", getRequestInfo(request));
         tables.put("Route Parameters", request.params());
-        tables.put("Query Parameters", request.queryParams().stream().collect(Collectors.toMap(p -> p, request::queryParams)));
-        tables.put("Session Attributes", request.session().attributes().stream().collect(Collectors.toMap(a -> a, request.session()::attribute)));
-        tables.put("Request Attributes", request.attributes().stream().collect(Collectors.toMap(a -> a, request::attribute)));
+        tables.put("Query Parameters", setToLinkedHashMap(request.queryParams(), p -> p, request::queryParams));
+        tables.put("Session Attributes", setToLinkedHashMap(request.session().attributes(), a -> a, request.session()::attribute));
+        tables.put("Request Attributes", setToLinkedHashMap(request.attributes(), a -> a, request::attribute));
         tables.put("Cookies", request.cookies());
         tables.put("Environment", getEnvironmentInfo());
+    }
+
+    private LinkedHashMap<String, String> setToLinkedHashMap(Set<String> set,
+                                                             Function<String, String> keyMapper,
+                                                             Function<String, String> valueMapper) {
+        return set.stream().collect(Collectors.toMap(keyMapper, valueMapper, (k, v) -> k, LinkedHashMap::new));
     }
 
     private LinkedHashMap<String, Object> getEnvironmentInfo() {
