@@ -33,23 +33,24 @@
                     <div class="exc-title">
                         <#list name as namePart><span>${namePart}</span></#list>
                     </div>
-                    <div id="exc-btns">
-                        <button id="copy-button" class="clipboard" data-clipboard-text="${plain_exception}" title="Copy exception details to clipabord">
-                            Copy stacktrace
-                        </button>
-                        <button id="google-button" data-google-query="<#list name as namePart>${namePart}<#if !namePart?is_last>+</#if></#list>" title="Google this exception">
-                            Google exception
-                        </button>
-                    </div>
                     <p class="exc-message">
                         <#if message == "">No Exception Message<#else>${message}</#if>
                     </p>
                 </div>
             </header>
+            <div id="exc-btns">
+                <button id="copy-button" class="clipboard" data-clipboard-text="${plain_exception}" title="Copy exception details to clipabord">
+                    Copy stacktrace
+                </button>
+                <button id="google-button" data-google-query="<#list name as namePart>${namePart}<#if !namePart?is_last>+</#if></#list>" title="Google this exception">
+                    Google exception
+                </button>
+            </div>
             <div class="frames-description">Stack frames (${frames?size}):</div>
             <div class="frames-container">
+                <#assign found = false>
                 <#list frames as frame>
-                    <div class="frame<#if frame.code??> has-code</#if><#if frame?is_first> active</#if>" id="frame-line-${frame?index}">
+                    <div class="frame<#if frame.code??> has-code<#if !found> active<#assign found = true></#if></#if>" id="frame-line-${frame?index}">
                         <div class="frame-method-info">
                             <span class="frame-index">${frames?size - frame?counter}</span>
                             <span class="frame-class">${frame.class}</span>
@@ -62,8 +63,9 @@
         </div>
         <div class="details-container cf">
             <div class="frame-code-container <#if !frames?has_content>empty</#if>">
+                <#assign found = false>
                 <#list frames as frame>
-                    <div class="frame-code<#if frame.code??> has-code</#if><#if frame?is_first> active</#if>" id="frame-code-${frame?index}">
+                    <div class="frame-code<#if frame.code??> has-code<#if !found> active<#assign found = true></#if></#if>" id="frame-code-${frame?index}">
                         <div class="frame-file">
                             <strong>${frame.file}</strong>
                             <#if frame.canonical_path??>

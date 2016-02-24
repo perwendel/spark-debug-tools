@@ -196,10 +196,11 @@ a {
     color: white;
     box-sizing: border-box;
     background-color: #2a2a2a;
-    padding: 35px 30px;
-    max-height: 180px;
+    padding: 0 20px;
     overflow: hidden;
     height: 115px;
+    display: flex;
+    align-items: center;
 }
 
 .exception {
@@ -209,7 +210,7 @@ a {
 .exc-title {
     margin: 0;
     color: #bebebe;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .exc-title span:after {
@@ -225,7 +226,7 @@ a {
 }
 
 .exc-message {
-    font-size: 20px;
+    font-size: 19px;
     word-wrap: break-word;
     margin: 4px 0 0 0;
     color: white;
@@ -242,7 +243,7 @@ a {
 
 .frame {
     position: relative;
-    padding: 8px 14px;
+    padding: 10px 14px;
     cursor: pointer;
     transition: all 0.1s ease;
     background: #eeeeee;
@@ -295,11 +296,12 @@ a {
 }
 
 .frame:not(.has-code) {
+    padding: 6px 14px;
     color: #777;
 }
 
 .frame:not(.has-code) .frame-index {
-    top: 6px;
+    top: 5px;
 }
 
 .frame:not(.has-code).active {
@@ -453,8 +455,8 @@ div.data-table {
         width: 100%;
     }
     .left-panel header {
-        padding: 15px 25px;
         height: auto;
+        padding: 20px;
     }
 }
 

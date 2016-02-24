@@ -1,8 +1,6 @@
 #exc-btns {
-    position: absolute;
-    right: 0;
-    top: -9px;
-    width: 125px;
+    padding: 5px 10px;
+    box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -11,24 +9,22 @@
     }
 }
 
-#copy-button, #google-button {
-    width: 125px;
+#exc-btns > button {
     cursor: pointer;
     padding: 5px;
-    background: #2a2a2a;
-    border: 2px solid #444;
+    background: #ccc;
+    border: 1px solid #aaa;
     color: #666;
     border-radius: 3px;
+    width: 44%;
+    margin: 0 2.5%;
     outline: none !important;
 }
 
-#copy-button:hover, #google-button:hover {
-    border-color: #555;
-    color: #777;
-}
-
-#google-button {
-    margin-top: 4px;
+#exc-btns > button:hover {
+    background: #cfcfcf;
+    border-color: #777;
+    color: #333;
 }
 
 .tooltipped {
