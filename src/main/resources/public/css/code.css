@@ -83,7 +83,6 @@
 
 .linenums li.current {
     color: #888;
-    padding: 2px;
     background: rgba(255, 100, 100, .07);
     animation: mild-flash 300ms ease-in-out;
     animation-delay: 100ms;
@@ -94,6 +93,11 @@
     background: rgba(255, 100, 100, .17);
     animation: flash 300ms ease-in-out;
     animation-delay: 100ms;
+}
+
+.linenums code {
+    padding-left: 6px;
+    border-left: 1px solid #515151;
 }
 
 @keyframes flash {
@@ -108,76 +112,63 @@
     100% {background: rgba(255, 100, 100, .07); }
 }
 
-pre .str {
+pre .str { /* string  */
     color: #83d443;
 }
 
-/* string  */
-pre .kwd {
+pre .kwd { /* keyword*/
     color: #4bb1b1;
     font-weight: bold;
 }
 
-/* keyword*/
-pre .com {
+pre .com { /* comment */
     color: #888;
     font-weight: bold;
 }
 
-/* comment */
-pre .typ {
+pre .typ { /* type  */
     /*color: #ef7c61;*/
     color: #e9e4e5;
 }
 
-/* type  */
-pre .lit {
+pre .lit { /* literal */
     color: #83d443;
 }
 
-/* punctuation  */
-pre .pun {
+pre .pun { /* punctuation  */
     color: #fff;
     font-weight: bold;
 }
 
-/* literal */
-pre .pln {
+pre .pln { /* plaintext  */
     color: #e9e4e5;
 }
 
-/* plaintext  */
-pre .tag {
+pre .tag { /* html/xml tag  */
     color: #4bb1b1;
 }
 
-/* html/xml tag  */
-pre .htm {
+pre .htm { /* html tag */
     color: #dda0dd;
 }
 
-/* html tag */
-pre .xsl {
+pre .xsl { /* xslt tag */
     color: #d0a0d0;
 }
 
-/* xslt tag */
-pre .atn {
+pre .atn { /* html/xml attribute name */
     color: #ef7c61;
     font-weight: normal;
 }
 
-/* html/xml attribute name */
-pre .atv {
+pre .atv { /* html/xml attribute value  */
     color: #bcd42a;
 }
 
-/* html/xml attribute value  */
-pre .dec {
+pre .dec { /* decimal  */
     color: #606;
 }
 
-/* decimal  */
 pre.prettyprint, code.prettyprint {
     font-family: "Inconsolata", "Fira Mono", "Source Code Pro", Monaco, Consolas, "Lucida Console", monospace;
     background: #333;
