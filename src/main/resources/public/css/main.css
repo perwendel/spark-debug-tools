@@ -12,6 +12,18 @@
     *zoom: 1;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: #aaa;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #777;
+}
+
 body {
     font: 12px "Helvetica Neue", helvetica, arial, sans-serif;
     color: #131313;
@@ -187,6 +199,7 @@ a {
     padding: 35px 30px;
     max-height: 180px;
     overflow: hidden;
+    height: 115px;
 }
 
 .exception {
@@ -229,7 +242,7 @@ a {
 
 .frame {
     position: relative;
-    padding: 14px;
+    padding: 8px 14px;
     cursor: pointer;
     transition: all 0.1s ease;
     background: #eeeeee;
@@ -249,7 +262,7 @@ a {
 }
 
 .frame-method-info {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .frame-class, .frame-function, .frame-index {
@@ -266,6 +279,7 @@ a {
     font-size: 11px;
     color: #a29d9d;
     background-color: rgba(0, 0, 0, .05);
+    top: 8px;
     height: 18px;
     width: 18px;
     line-height: 18px;
@@ -275,9 +289,38 @@ a {
     display: inline-block;
 }
 
-.frame-class {
+.frame-index + * {
     box-sizing: border-box;
     padding-left: 25px;
+}
+
+.frame:not(.has-code) {
+    color: #777;
+}
+
+.frame:not(.has-code) .frame-index {
+    top: 6px;
+}
+
+.frame:not(.has-code).active {
+    color: #ee9a00;
+}
+
+.frame:not(.has-code) .frame-file, .frame:not(.has-code) .frame-function {
+    display: none;
+}
+
+.frame:not(.has-code) .frame-method-info {
+    margin: 0;
+}
+
+.frame:not(.has-code) .frame-class {
+    font-size: 11px;
+}
+
+.frame-code:not(.has-code) {
+    box-sizing: border-box;
+    min-height: 115px;
 }
 
 .frame-file {
@@ -411,6 +454,7 @@ div.data-table {
     }
     .left-panel header {
         padding: 15px 25px;
+        height: auto;
     }
 }
 

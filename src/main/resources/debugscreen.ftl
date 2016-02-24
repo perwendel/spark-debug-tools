@@ -49,7 +49,7 @@
             <div class="frames-description">Stack frames (${frames?size}):</div>
             <div class="frames-container">
                 <#list frames as frame>
-                    <div class="frame <#if frame?is_first>active</#if>" id="frame-line-${frame?index}">
+                    <div class="frame<#if frame.code??> has-code</#if><#if frame?is_first> active</#if>" id="frame-line-${frame?index}">
                         <div class="frame-method-info">
                             <span class="frame-index">${frames?size - frame?counter}</span>
                             <span class="frame-class">${frame.class}</span>
@@ -63,7 +63,7 @@
         <div class="details-container cf">
             <div class="frame-code-container <#if !frames?has_content>empty</#if>">
                 <#list frames as frame>
-                    <div class="frame-code <#if frame?is_first>active</#if>" id="frame-code-${frame?index}">
+                    <div class="frame-code<#if frame.code??> has-code</#if><#if frame?is_first> active</#if>" id="frame-code-${frame?index}">
                         <div class="frame-file">
                             <strong>${frame.file}</strong>
                             <#if frame.canonical_path??>
