@@ -249,6 +249,28 @@ a {
     background: #eeeeee;
 }
 
+.expander {
+    text-align: center;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    color: #777;
+    background: #eeeeee;
+    font-size: 12px;
+}
+
+.expander:hover {
+    background: #f2ebe3;
+}
+
+.expander:not(:last-child) {
+    border-bottom: 1px solid rgba(0, 0, 0, .05);
+}
+
+.frame.shrunk {
+    display: none;
+}
+
 .frame:not(:last-child) {
     border-bottom: 1px solid rgba(0, 0, 0, .05);
 }

@@ -132,8 +132,9 @@
     <a href="https://github.com/mschurr" target="_blank">Matthew Schurr</a>.
 </div>
 <script><#include "/public/js/lib/zepto.min.js"></script>
-<script><#include "/public/js/lib/clipboard.min.js"></script>
+<script><#include "/public/js/shrink-stackframes.js"></script>
 <script><#include "/public/js/lib/prettify.min.js"></script>
+<script><#include "/public/js/lib/clipboard.min.js"></script>
 <script><#include "/public/js/main.js"></script>
 </body>
 </html>
