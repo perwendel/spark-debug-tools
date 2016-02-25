@@ -47,7 +47,7 @@
     background: #000;
     border-radius: 3px;
     -webkit-font-smoothing: subpixel-antialiased;
-    max-width: 120px;
+    width: 120px;
 }
 
 .tooltipped:before {
@@ -60,7 +60,6 @@
     pointer-events: none;
     content: "";
     border: 5px solid transparent;
-    max-width: 120px;
 }
 
 .tooltipped:hover:before,
@@ -75,13 +74,13 @@
 
 .tooltipped-s:after {
     top: 100%;
-    right: -30%;
+    right: -100px; /* width is 120px */
     margin-top: 5px
 }
 
 .tooltipped-s:before {
     top: auto;
-    right: 30%;
+    right: 20px;
     bottom: -5px;
     margin-right: 5px;
     border-bottom-color: #000;
