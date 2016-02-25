@@ -92,8 +92,8 @@
                     <#list tables?keys as label>
                         <#assign data = tables[label]>
                         <div class="data-table">
+                            <h3>${label}</h3>
                             <#if data?has_content>
-                                <h3>${label}</h3>
                                 <table class="data-table">
                                     <thead>
                                     <tr>
@@ -109,7 +109,6 @@
                                     </#list>
                                 </table>
                             <#else>
-                                <label class="empty">${label}</label>
                                 <span class="empty">EMPTY</span>
                             </#if>
                         </div>
