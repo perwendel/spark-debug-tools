@@ -93,7 +93,7 @@
                         <#assign data = tables[label]>
                         <div class="data-table">
                             <#if data?has_content>
-                                <label>${label}</label>
+                                <h3>${label}</h3>
                                 <table class="data-table">
                                     <thead>
                                     <tr>

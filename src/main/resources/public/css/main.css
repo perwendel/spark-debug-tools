@@ -184,7 +184,7 @@ a {
 
 .details-container {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     float: right;
     width: 70%;
     background: #fafafa;
@@ -371,13 +371,10 @@ a {
     padding: 0 30px;
 }
 
-.data-table-container label {
+.data-table-container h3 {
     font-size: 16px;
-    color: #303030;
-    font-weight: bold;
+    color: #444;
     margin: 15px 0 5px;
-    display: block;
-    padding-bottom: 5px;
 }
 
 div.data-table {
@@ -475,6 +472,7 @@ div.data-table {
     }
     .details-container {
         height: auto;
+        overflow: hidden;
         float: left;
         width: 100%;
     }

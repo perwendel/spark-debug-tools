@@ -35,20 +35,19 @@
     position: absolute;
     z-index: 1000000;
     display: none;
-    padding: 5px 8px;
+    padding: 8px 12px;
     color: #fff;
     text-align: center;
     text-decoration: none;
     text-shadow: none;
     text-transform: none;
     letter-spacing: normal;
-    word-wrap: break-word;
-    white-space: pre;
     pointer-events: none;
     content: attr(aria-label);
     background: #000;
     border-radius: 3px;
-    -webkit-font-smoothing: subpixel-antialiased
+    -webkit-font-smoothing: subpixel-antialiased;
+    max-width: 120px;
 }
 
 .tooltipped:before {
@@ -60,7 +59,8 @@
     color: #000;
     pointer-events: none;
     content: "";
-    border: 5px solid transparent
+    border: 5px solid transparent;
+    max-width: 120px;
 }
 
 .tooltipped:hover:before,
@@ -75,7 +75,7 @@
 
 .tooltipped-s:after {
     top: 100%;
-    right: 30%;
+    right: -30%;
     margin-top: 5px
 }
 

@@ -10,7 +10,7 @@ Zepto(function ($) {
     highlightCurrentLine();
 
     setTimeout(function() {
-        $("#star-frame").attr("src", "https://ghbtns.com/github-btn.html?user=perwendel&repo=spark&type=star&count=true").css("width", "120px");
+        $("#star-frame").attr("src", "https://ghbtns.com/github-btn.html?user=perwendel&repo=spark&type=star&count=true").css("width", "95px");
     }, 1000);
 
     function highlightCurrentLine () {
@@ -53,7 +53,7 @@ Zepto(function ($) {
 
     clipboard.on('success', function (e) {
         e.clearSelection();
-        showTooltip(e.trigger, 'Copied!');
+        showTooltip(e.trigger, 'Full stacktrace copied to clipboard!');
     });
 
     clipboard.on('error', function (e) {
