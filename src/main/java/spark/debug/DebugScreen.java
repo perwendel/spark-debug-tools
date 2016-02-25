@@ -78,6 +78,9 @@ public class DebugScreen implements ExceptionHandler {
             // have this simple fallback.
             response.body(
                     "<html>"
+                            + "  <head>"
+                            + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
+                            + "  </head>"
                             + "  <body>"
                             + "    <h1>Caught Exception:</h1>"
                             + "    <pre>" + ExceptionUtils.getStackTrace(exception) + "</pre>"

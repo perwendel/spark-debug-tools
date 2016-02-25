@@ -12,16 +12,16 @@
     *zoom: 1;
 }
 
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-track {
-    background: #aaa;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #777;
+@media (min-width: 769px) {
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #aaa;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #777;
+    }
 }
 
 body {
@@ -184,7 +184,7 @@ a {
 
 .details-container {
     height: 100%;
-    overflow: auto;
+    overflow: hidden;
     float: right;
     width: 70%;
     background: #fafafa;
@@ -196,14 +196,14 @@ a {
     color: white;
     box-sizing: border-box;
     background-color: #2a2a2a;
-    padding: 0 20px;
-    overflow: hidden;
-    height: 115px;
+    padding: 20px;
+    min-height: 115px;
     display: flex;
     align-items: center;
 }
 
 .exception {
+    width: 100%;
     position: relative;
 }
 
@@ -211,6 +211,8 @@ a {
     margin: 0;
     color: #bebebe;
     font-size: 13px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .exc-title span:after {
@@ -478,7 +480,6 @@ div.data-table {
     }
     .left-panel header {
         height: auto;
-        padding: 20px;
     }
 }
 

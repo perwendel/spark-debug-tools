@@ -1,18 +1,19 @@
 Zepto(function ($) {
 
+    var $frameContainer = $('.frames-container');
+    var $detailsContainer = $('.details-container');
+    var $activeLine = $frameContainer.find('.frame.active');
+    var $activeFrame = $detailsContainer.find('.frame-code.active');
+    var $ajaxEditors = $('.editor-link[data-ajax]');
+
     prettyPrint();
+    highlightCurrentLine();
 
     setTimeout(function() {
         $("#star-frame").attr("src", "https://ghbtns.com/github-btn.html?user=perwendel&repo=spark&type=star&count=true").css("width", "120px");
     }, 1000);
 
-    var $frameContainer = $('.frames-container');
-    var $container = $('.details-container');
-    var $activeLine = $frameContainer.find('.frame.active');
-    var $activeFrame = $container.find('.frame-code.active');
-    var $ajaxEditors = $('.editor-link[data-ajax]');
-
-    var highlightCurrentLine = function () {
+    function highlightCurrentLine () {
         // Highlight the active and neighboring lines for this frame:
         var activeLineNumber = +($activeLine.find('.frame-line').text());
         var $lines = $activeFrame.find('.linenums li');
@@ -21,13 +22,7 @@ Zepto(function ($) {
         $($lines[activeLineNumber - firstLine - 1]).addClass('current');
         $($lines[activeLineNumber - firstLine]).addClass('current active');
         $($lines[activeLineNumber - firstLine + 1]).addClass('current');
-    };
-
-    // Highlight the active for the first frame:
-    highlightCurrentLine();
-    window.setTimeout(function () {
-        highlightCurrentLine();
-    }, 250);
+    }
 
     $frameContainer.on('click', '.frame', function () {
         var $this = $(this);
@@ -46,7 +41,7 @@ Zepto(function ($) {
 
             highlightCurrentLine();
 
-            $container.scrollTop(0);
+            $detailsContainer.scrollTop(0);
         }
     });
 
@@ -97,12 +92,12 @@ Zepto(function ($) {
             if (e.which === 38 /* arrow up */) {
                 $activeLine.prev('.frame').click();
                 $activeLine[0].scrollIntoView();
-                $container.focus();
+                $detailsContainer.focus();
                 e.preventDefault();
             } else if (e.which === 40 /* arrow down */) {
                 $activeLine.next('.frame').click();
                 $activeLine[0].scrollIntoView();
-                $container.focus();
+                $detailsContainer.focus();
                 e.preventDefault();
             }
         }
