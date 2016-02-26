@@ -6,6 +6,10 @@ $("body").on("click", ".expander", function () {
     $("." + groupId).removeClass("shrunk");
 });
 
+setTimeout(function() { //failsafe
+    $(".frames-container").css("display", "block");
+}, 500);
+
 // If you're reading this... I'm sorry.
 (function shrinkingTime(runsLeft) {
     var tryShrink = $(".frame.tryShrink");
@@ -41,6 +45,9 @@ $("body").on("click", ".expander", function () {
         if (!$(tryShrink[i]).hasClass("has-code") && runsLeft > 0) {
             shrinkingTime(runsLeft - 1);
             break;
+        }
+        if(i === tryShrink.length-1) { //all done
+            $(".frames-container").css("display", "block");
         }
     }
 })(10); //max runs

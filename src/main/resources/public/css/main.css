@@ -243,6 +243,10 @@ a {
     font-size: 11px;
 }
 
+.frames-container {
+    display: none; /* set to block by javascript (or <noscript> */
+}
+
 .frame {
     position: relative;
     padding: 10px 14px;
