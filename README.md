@@ -2,7 +2,7 @@ Spark Debug Screen
 =====================
 Error pages for the [Spark Java micro-framework](http://sparkjava.com/).
 
-![image](http://i.imgur.com/kslpu6B.png)
+![image](http://i.imgur.com/Z3MdIsI.png)
 
 ## Usage:
 To utilize:
