@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import freemarker.template.Configuration;
+import freemarker.template.Version;
 import spark.ExceptionHandler;
 import spark.Request;
 import spark.Response;
@@ -30,29 +31,38 @@ public class DebugScreen implements ExceptionHandler {
 
     protected final FreeMarkerEngine templateEngine;
     protected final Configuration templateConfig;
-    protected final ImmutableList<SourceLocator> sourceLocators;
+    protected final SourceLocator[] sourceLocators;
 
     public DebugScreen() {
-        templateEngine = new FreeMarkerEngine();
-        templateConfig = new Configuration();
-        templateConfig.setClassForTemplateLoading(getClass(), "/");
-        templateEngine.setConfiguration(templateConfig);
-        sourceLocators = ImmutableList.of(
-                new FileSearchSourceLocator(new File("./src/main/java")),
-                new FileSearchSourceLocator(new File("./src/test/java"))
+        this(
+                new FileSearchSourceLocator("./src/main/java"),
+                new FileSearchSourceLocator("./src/test/java")
         );
     }
 
-    public DebugScreen(ImmutableList<SourceLocator> sourceLocators) {
+    public DebugScreen(SourceLocator... sourceLocators) {
         templateEngine = new FreeMarkerEngine();
-        templateConfig = new Configuration();
+        templateConfig = new Configuration(new Version(2, 3, 23));
         templateConfig.setClassForTemplateLoading(getClass(), "/");
         templateEngine.setConfiguration(templateConfig);
         this.sourceLocators = sourceLocators;
     }
 
+    /**
+     * Enables the debug screen to catch any exception (Exception.class)
+     * using the default source locators (src/main/java and src/test/java)
+     */
     public static void enableDebugScreen() {
         exception(Exception.class, new DebugScreen());
+    }
+
+    /**
+     * Enables the debug screen to catch any exception (Exception.class)
+     * using user defined source locators
+     * @param sourceLocators locators to use to find source files
+     */
+    public static void enableDebugScreen(SourceLocator... sourceLocators) {
+        exception(Exception.class, new DebugScreen(sourceLocators));
     }
 
     @Override

@@ -17,13 +17,13 @@ import com.google.common.base.Optional;
  * @author mschurr
  */
 public class FileSearchSourceLocator implements SourceLocator {
-    private final File basePath;
+    private final File basePathFile;
 
     /**
-     * @param basePath The directory to search for source files within (e.g. src/main/java).
+     * @param basePath The path of the directory to search for source files within (e.g. src/main/java).
      */
-    public FileSearchSourceLocator(File basePath) {
-        this.basePath = basePath;
+    public FileSearchSourceLocator(String basePath) {
+        this.basePathFile = new File(basePath);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class FileSearchSourceLocator implements SourceLocator {
             return Optional.absent();
         }
 
-        if (!basePath.exists() || !basePath.isDirectory() || !basePath.canRead()) {
+        if (!basePathFile.exists() || !basePathFile.isDirectory() || !basePathFile.canRead()) {
             return Optional.absent();
         }
 
@@ -45,7 +45,7 @@ public class FileSearchSourceLocator implements SourceLocator {
 
         // Since the stack trace only gives the file base name (and not the actual path),
         // we need to enumerate all possibilities.
-        Collection<File> possibilities = FileUtils.listFiles(basePath, new IOFileFilter() {
+        Collection<File> possibilities = FileUtils.listFiles(basePathFile, new IOFileFilter() {
             @Override
             public boolean accept(File file) {
                 return file.getName().equals(frame.getFileName());
