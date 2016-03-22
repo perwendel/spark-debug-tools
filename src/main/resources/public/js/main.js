@@ -26,6 +26,10 @@ Zepto(function ($) {
 
     $frameContainer.on('click', '.frame', function () {
         var $this = $(this);
+        setActiveFrame($this);
+    });
+
+    function setActiveFrame($this) {
         var id = /frame\-line\-([\d]*)/.exec($this.attr('id'))[1];
         var $codeFrame = $('#frame-code-' + id);
 
@@ -43,7 +47,7 @@ Zepto(function ($) {
 
             $detailsContainer.scrollTop(0);
         }
-    });
+    }
 
     var clipboard = new Clipboard('.clipboard');
     var showTooltip = function (elem, msg) {
@@ -109,4 +113,13 @@ Zepto(function ($) {
         $.get(this.href);
     });
 
+    // Set the first frame for which a code snippet could be found (if any) to be visible.
+    // That frame will most likely be the most immediately relevant to the user.
+    $(document).ready(function() {
+      var codeFrames = $('.frame.has-code');
+
+      if (codeFrames.length > 0) {
+        setActiveFrame($(codeFrames[0]));
+      }
+    });
 });

@@ -39,7 +39,7 @@
                 </div>
             </header>
             <div id="exc-btns">
-                <button id="copy-button" class="clipboard" data-clipboard-text="${plain_exception}" title="Copy exception details to clipabord">
+                <button id="copy-button" class="clipboard" data-clipboard-text="${plain_exception}" title="Copy exception details to clipboard">
                     Copy stacktrace
                 </button>
                 <button id="google-button" data-google-query="<#list name as namePart>${namePart}<#if !namePart?is_last>+</#if></#list>" title="Google this exception">
