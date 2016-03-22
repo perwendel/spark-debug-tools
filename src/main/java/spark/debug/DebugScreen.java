@@ -28,7 +28,6 @@ import com.google.common.collect.ImmutableMap;
 import static spark.Spark.exception;
 
 public class DebugScreen implements ExceptionHandler {
-
     protected final FreeMarkerEngine templateEngine;
     protected final Configuration templateConfig;
     protected final SourceLocator[] sourceLocators;
@@ -67,21 +66,33 @@ public class DebugScreen implements ExceptionHandler {
 
     @Override
     public final void handle(Exception exception, Request request, Response response) {
+        handleThrowable(exception, request, response);
+    }
+    
+    public final void handleThrowable(Throwable throwable, Request request, Response response) {
+        response.status(500); // Internal Server Error
+        
+        // Find the original causing throwable; this will contain the most relevant information to 
+        // display to the user. 
+        while (throwable.getCause() != null) {
+            throwable = throwable.getCause();
+        }
+        
         try {
-            List<Map<String, Object>> frames = parseFrames(exception);
-
+            List<Map<String, Object>> frames = parseFrames(throwable);
+  
             LinkedHashMap<String, Object> model = new LinkedHashMap<>();
-            model.put("message", Optional.fromNullable(exception.getMessage()).or(""));
-            model.put("plain_exception", ExceptionUtils.getStackTrace(exception));
+            model.put("message", Optional.fromNullable(throwable.getMessage()).or(""));
+            model.put("plain_exception", ExceptionUtils.getStackTrace(throwable));
             model.put("frames", frames);
-            model.put("name", exception.getClass().getCanonicalName().split("\\."));
-            model.put("basic_type", exception.getClass().getSimpleName());
-            model.put("type", exception.getClass().getCanonicalName());
-
+            model.put("name", throwable.getClass().getCanonicalName().split("\\."));
+            model.put("basic_type", throwable.getClass().getSimpleName());
+            model.put("type", throwable.getClass().getCanonicalName());
+  
             LinkedHashMap<String, Map<String, ? extends Object>> tables = new LinkedHashMap<>();
             installTables(tables, request);
             model.put("tables", tables);
-
+  
             response.body(templateEngine.render(Spark.modelAndView(model, "debugscreen.ftl")));
         } catch (Exception e) {
             // In case we encounter any exceptions trying to render the error page itself,
@@ -93,7 +104,7 @@ public class DebugScreen implements ExceptionHandler {
                             + "  </head>"
                             + "  <body>"
                             + "    <h1>Caught Exception:</h1>"
-                            + "    <pre>" + ExceptionUtils.getStackTrace(exception) + "</pre>"
+                            + "    <pre>" + ExceptionUtils.getStackTrace(throwable) + "</pre>"
                             + "    <h1>Caught Exception Rendering DebugScreen:</h1>"
                             + "    <pre>" + ExceptionUtils.getStackTrace(e) + "</pre>"
                             + "  </body>"
@@ -156,7 +167,7 @@ public class DebugScreen implements ExceptionHandler {
      * @param e An exception.
      * @return A view model for the frames in the exception.
      */
-    private List<Map<String, Object>> parseFrames(Exception e) {
+    private List<Map<String, Object>> parseFrames(Throwable e) {
         ImmutableList.Builder<Map<String, Object>> frames = ImmutableList.builder();
 
         for (StackTraceElement frame : e.getStackTrace()) {
