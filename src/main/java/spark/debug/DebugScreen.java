@@ -58,6 +58,7 @@ public class DebugScreen implements ExceptionHandler {
     /**
      * Enables the debug screen to catch any exception (Exception.class)
      * using user defined source locators
+     *
      * @param sourceLocators locators to use to find source files
      */
     public static void enableDebugScreen(SourceLocator... sourceLocators) {
@@ -68,19 +69,19 @@ public class DebugScreen implements ExceptionHandler {
     public final void handle(Exception exception, Request request, Response response) {
         handleThrowable(exception, request, response);
     }
-    
+
     public final void handleThrowable(Throwable throwable, Request request, Response response) {
         response.status(500); // Internal Server Error
-        
+
         // Find the original causing throwable; this will contain the most relevant information to 
         // display to the user. 
         while (throwable.getCause() != null) {
             throwable = throwable.getCause();
         }
-        
+
         try {
             List<Map<String, Object>> frames = parseFrames(throwable);
-  
+
             LinkedHashMap<String, Object> model = new LinkedHashMap<>();
             model.put("message", Optional.fromNullable(throwable.getMessage()).or(""));
             model.put("plain_exception", ExceptionUtils.getStackTrace(throwable));
@@ -88,11 +89,11 @@ public class DebugScreen implements ExceptionHandler {
             model.put("name", throwable.getClass().getCanonicalName().split("\\."));
             model.put("basic_type", throwable.getClass().getSimpleName());
             model.put("type", throwable.getClass().getCanonicalName());
-  
+
             LinkedHashMap<String, Map<String, ? extends Object>> tables = new LinkedHashMap<>();
             installTables(tables, request);
             model.put("tables", tables);
-  
+
             response.body(templateEngine.render(Spark.modelAndView(model, "debugscreen.ftl")));
         } catch (Exception e) {
             // In case we encounter any exceptions trying to render the error page itself,

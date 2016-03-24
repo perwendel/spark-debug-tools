@@ -14,7 +14,7 @@ public class DebugScreenExample {
             request.session().attribute("example-session-attr", "example-session-attr-content");
         });
         get("*", (req, res) -> {
-          return Integer.parseInt("lol");
+            return Integer.parseInt("lol");
         });
         enableDebugScreen(); //just add this to your project to enable the debug screen
     }
