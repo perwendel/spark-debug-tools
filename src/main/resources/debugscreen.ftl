@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#CC2222">
     <meta name="apple-mobile-web-app-status-bar-style" content="#CC2222">
-    <style type="text/css"><#include "/public/css/main.css"></style>
-    <style type="text/css"><#include "/public/css/code.css"></style>
-    <style type="text/css"><#include "/public/css/exception-buttons.css"></style>
+    <style type="text/css"><#include "/public/sparkdebugtools/css/sparkdebugtools_main.css"></style>
+    <style type="text/css"><#include "/public/sparkdebugtools/css/sparkdebugtools_code.css"></style>
+    <style type="text/css"><#include "/public/sparkdebugtools/css/sparkdebugtools_exception-buttons.css"></style>
 </head>
 <body>
 <div id="spark-header">
@@ -130,11 +130,11 @@
     It was ported by
     <a href="https://github.com/mschurr" target="_blank">Matthew Schurr</a>.
 </div>
-<script><#include "/public/js/lib/zepto.min.js"></script>
-<script><#include "/public/js/shrink-stackframes.js"></script>
-<script><#include "/public/js/lib/prettify.min.js"></script>
-<script><#include "/public/js/lib/clipboard.min.js"></script>
-<script><#include "/public/js/main.js"></script>
+<script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_zepto.min.js"></script>
+<script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_prettify.min.js"></script>
+<script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_clipboard.min.js"></script>
+<script><#include "/public/sparkdebugtools/js/sparkdebugtools_shrink-stackframes.js"></script>
+<script><#include "/public/sparkdebugtools/js/sparkdebugtools_main.js"></script>
 <noscript><style>.frames-container{display:block}</style></noscript
 </body>
 </html>
