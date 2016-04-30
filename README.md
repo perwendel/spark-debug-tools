@@ -28,7 +28,11 @@ public class DebugScreenExample {
 
 ## Maven:
 
-Coming soon (hopefully).
+<dependency>
+    <groupId>com.sparkjava</groupId>
+    <artifactId>spark-debug-tools</artifactId>
+    <version>0.5</version>
+</dependency>
 
 ## Advanced Usage:
 
