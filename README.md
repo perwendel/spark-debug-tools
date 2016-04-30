@@ -27,13 +27,13 @@ public class DebugScreenExample {
 ```
 
 ## Maven:
-
+```
 <dependency>
     <groupId>com.sparkjava</groupId>
     <artifactId>spark-debug-tools</artifactId>
     <version>0.5</version>
 </dependency>
-
+```
 ## Advanced Usage:
 
 **To add additional tables:**
