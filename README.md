@@ -27,7 +27,7 @@ public class DebugScreenExample {
 ```
 
 ## Maven:
-```
+```xml
 <dependency>
     <groupId>com.sparkjava</groupId>
     <artifactId>spark-debug-tools</artifactId>
