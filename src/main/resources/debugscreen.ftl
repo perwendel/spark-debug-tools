@@ -104,7 +104,7 @@
                                     <#list data?keys as k>
                                         <tr>
                                             <td><div>${k}</div></td>
-                                            <td><div>${data[k]}</div></td>
+                                            <td><div>${data[k]?string}</div></td>
                                         </tr>
                                     </#list>
                                 </table>
