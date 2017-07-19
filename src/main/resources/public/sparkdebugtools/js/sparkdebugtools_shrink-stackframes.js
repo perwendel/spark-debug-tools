@@ -1,53 +1,61 @@
-$(".frame").addClass("tryShrink");
+$(document).ready(function() {
+    var exceptions = $(".frames-container");
 
-$("body").on("click", ".expander", function () {
-    var groupId = $(this).attr("id");
-    $(this).remove();
-    $("." + groupId).removeClass("shrunk");
+    /* Go through each exception... */
+    for (var i = 0; i < exceptions.length; i++) {
+        var exception = $(exceptions[i]);
+        var frames = exception.find(".frame");
+        var length = 0;
+
+        /* Require at least two frames. */
+        if (frames.length >= 2) {
+            /* Collapse consecutive frames with no code. 
+               First and last frame always should be visible. */
+            for (var j = 1; j < frames.length - 1; j++) {
+                var frame = $(frames[j]);
+
+                if (!frame.hasClass("has-code")) {
+                    frame.addClass("shrunk");
+                    length += 1;
+                }
+
+                if (frame.hasClass("has-code") || j == frames.length - 2) {
+                    if (length > 1) {
+                        frame.before('<div class="expander">Show ' + (length) + ' empty frames</div>');
+                        length = 0;
+                    } else if (length == 1) {
+                        $(frames[j - 1]).removeClass("shrunk");
+                    }
+                }
+            }
+        }
+    }
+
+    $(".expander").click(function(event) {
+        var element = $(this).prev("div");
+
+        while (element.length > 0) {
+            if (!element.hasClass("shrunk")) {
+                break;
+            }
+
+            element.removeClass("shrunk");
+            element = $(element).prev("div");
+        }
+
+        element = $(this).next("div");
+
+        while (element.length > 0) {
+            if (!element.hasClass("shrunk")) {
+                break;
+            }
+
+            element.removeClass("shrunk");
+            element = $(element).next("div");
+        }
+
+        $(this).remove();
+    });
+
+    exceptions.css("display", "block"); 
 });
-
-setTimeout(function() { //failsafe
-    $(".frames-container").css("display", "block");
-}, 500);
-
-// If you're reading this... I'm sorry.
-(function shrinkingTime(runsLeft) {
-    var tryShrink = $(".frame.tryShrink");
-    var beginIndex = 0;
-    var endIndex = tryShrink.length;
-    for (var i = 0; i < tryShrink.length; i++) {
-        if (!$(tryShrink[i]).hasClass("has-code")) {
-            beginIndex = i;
-            break;
-        }
-    }
-    for (var i = 0; i < tryShrink.length; i++) {
-        if (i > beginIndex && $(tryShrink[i]).hasClass("has-code")) {
-            endIndex = i;
-            break;
-        }
-    }
-    var shrink = tryShrink.slice(beginIndex, endIndex);
-    var groupId = "g" + $(shrink[0]).find(".frame-index").text() + "-" + $(shrink[shrink.length - 1]).find(".frame-index").text();
-    for (var i = 0; i < shrink.length; i++) {
-        $(shrink[i]).removeClass("tryShrink");
-        if (shrink.length > 3) {
-            if (i == beginIndex) {
-                $(shrink[i]).after('<div id="' + groupId + '" class="expander">Show ' + (shrink.length - 2) + ' empty frames</div>');
-            }
-            if (i > 0 && i < shrink.length - 1) {
-                $(shrink[i]).addClass("shrunk " + groupId);
-            }
-        }
-    }
-    tryShrink = $(".frame.tryShrink");
-    for (var i = 0; i < tryShrink.length; i++) {
-        if (!$(tryShrink[i]).hasClass("has-code") && runsLeft > 0) {
-            shrinkingTime(runsLeft - 1);
-            break;
-        }
-        if(i === tryShrink.length-1) { //all done
-            $(".frames-container").css("display", "block");
-        }
-    }
-})(10); //max runs
