@@ -172,6 +172,7 @@ a {
 .stack-container {
     height: 100%;
     position: relative;
+    overflow: auto;
 }
 
 .left-panel {
@@ -196,10 +197,30 @@ a {
     color: white;
     box-sizing: border-box;
     background-color: #2a2a2a;
-    padding: 20px;
-    min-height: 115px;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
     display: flex;
     align-items: center;
+}
+
+.left-panel .exception-container:first-of-type header {
+    padding-top: 20px;
+    min-height: 115px;
+}
+
+.left-panel .exception-separator {
+    color: white;
+    box-sizing: border-box;
+    background-color: #1a1a1a;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 18px;
+    display: flex;
+    align-items: left;
 }
 
 .exception {
@@ -303,6 +324,10 @@ a {
     max-width: 100%;
 }
 
+.frame-function:before {
+    content: ':: ';
+}
+
 .frame-index {
     position: absolute;
     font-size: 11px;
@@ -336,15 +361,20 @@ a {
     color: #ee9a00;
 }
 
-.frame:not(.has-code) .frame-file, .frame:not(.has-code) .frame-function {
+.frame:not(.has-code) .frame-file {
     display: none;
+}
+
+.frame:not(.has-code) .frame-function {
+    /*display: none;*/
 }
 
 .frame:not(.has-code) .frame-method-info {
     margin: 0;
 }
 
-.frame:not(.has-code) .frame-class {
+.frame:not(.has-code) .frame-class,
+.frame:not(.has-code) .frame-function {
     font-size: 11px;
 }
 

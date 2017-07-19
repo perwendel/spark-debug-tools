@@ -1,5 +1,4 @@
 Zepto(function ($) {
-
     var $frameContainer = $('.frames-container');
     var $detailsContainer = $('.details-container');
     var $activeLine = $frameContainer.find('.frame.active');
@@ -30,7 +29,14 @@ Zepto(function ($) {
     });
 
     function setActiveFrame($this) {
-        var id = /frame\-line\-([\d]*)/.exec($this.attr('id'))[1];
+        console.log("Set Active Frame: ", $this);
+        if ($this.hasClass('shrunk')) {
+            $this.removeClass('shrunk');
+            $this.closest(".exception-container").find("div.frame.shrunk").removeClass("shrunk");
+            $this.closest(".exception-container").find(".expander").remove();
+        }
+        var id = /frame\-line\-([\d]+)\-([\d]+)/.exec($this.attr('id'));
+        var id = id[1] + "-" + id[2];
         var $codeFrame = $('#frame-code-' + id);
 
         if ($codeFrame) {
@@ -47,6 +53,8 @@ Zepto(function ($) {
 
             $detailsContainer.scrollTop(0);
         }
+
+        $detailsContainer.focus();
     }
 
     var clipboard = new Clipboard('.clipboard');
@@ -82,10 +90,36 @@ Zepto(function ($) {
         return actionMsg;
     }
 
-    $("#google-button").click(function (e) {
+    $(".google-button").click(function (e) {
         var exception = e.currentTarget.getAttribute("data-google-query");
         window.open("https://www.google.com/?#q=" + exception);
     });
+
+    function prevFrame() {
+        var frames = $(".frame");
+
+        for (var i = 0; i < frames.length; i++) {
+            if (frames[i] == $activeLine[0]) {
+                return (i > 0) ? frames[i-1] : null;
+            }
+        }
+
+        return null;
+    }
+
+    function nextFrame() {
+        var frames = $(".frame");
+
+        for (var i = 0; i < frames.length; i++) {
+            if (frames[i] == $activeLine[0]) {
+                if (i < frames.length - 1) {
+                    return frames[i+1];
+                }
+            }
+        }
+
+        return null;
+    }
 
     $(document).on('keydown', function (e) {
         if (e.ctrlKey) {
@@ -94,15 +128,19 @@ Zepto(function ($) {
             // 2) make sure the newly selected element is within the view-scope
             // 3) focus the (right) container, so arrow-up/down (without ctrl) scroll the details
             if (e.which === 38 /* arrow up */) {
-                $activeLine.prev('.frame').click();
-                $activeLine[0].scrollIntoView();
-                $detailsContainer.focus();
-                e.preventDefault();
+                var frame = prevFrame();
+                if (frame) {
+                    frame.click();
+                    $activeLine[0].scrollIntoView();
+                    e.preventDefault();
+                }
             } else if (e.which === 40 /* arrow down */) {
-                $activeLine.next('.frame').click();
-                $activeLine[0].scrollIntoView();
-                $detailsContainer.focus();
-                e.preventDefault();
+                var frame = nextFrame();
+                if (frame) {
+                    frame.click();
+                    $activeLine[0].scrollIntoView();
+                    e.preventDefault();
+                }
             }
         }
     });
@@ -113,13 +151,32 @@ Zepto(function ($) {
         $.get(this.href);
     });
 
-    // Set the first frame for which a code snippet could be found (if any) to be visible.
-    // That frame will most likely be the most immediately relevant to the user.
-    $(document).ready(function() {
-      var codeFrames = $('.frame.has-code');
+    function updateHeight() {
+        $(".stack-container").css({"height": ($(window).height() - $("#spark-header").height()) + "px"});
+    }
 
-      if (codeFrames.length > 0) {
-        setActiveFrame($(codeFrames[0]));
+    $(window).on('resize', function(event) {
+        updateHeight();
+    });
+
+    $(document).ready(function() {
+      updateHeight();
+
+      /* Set the furthest down frame in the exception furthest down the causal chain to be
+         immediately visible as it will most likely contain the most relevant information. */
+      var exceptions = $(".left-panel .exception-container");
+      for (var i = exceptions.length - 1; i >= 0; i--) {
+        var exception = exceptions[i];
+        var codeFrames = $(exception).find('.frame.has-code');
+
+        if (codeFrames.length > 0) {
+            setActiveFrame($(codeFrames[0]));
+            return;
+        }
       }
+
+      /* Set the last frame to be selected by default if we didn't find any code frames. */
+      var frames = $(exceptions[exceptions.length - 1]).find(".frame");
+      setActiveFrame($(frames[0]));
     });
 });

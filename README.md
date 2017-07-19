@@ -43,7 +43,7 @@ public class DebugScreenExample {
 // Subclass the handler:
 class MyDebugScreen extends DebugScreen {
   @Override
-  protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request, Exception exception) {
+  protected void installTables(LinkedHashMap<String, Map<String, ? extends Object>> tables, Request request, Throwable exception) {
     super.installTables(tables, request, exception);
     Map<String, Object> myTable = new LinkedHashMap<>();
     tables.put("My Table", myTable);
@@ -62,11 +62,11 @@ By default DebugScreen looks within the folders `src/main/java` and `src/test/ja
 
 ```java
 Spark.exception(Exception.class, new DebugScreen(
-    ImmutableList.of(new FileSearchSourceLocator(new File("/path/to/source/code")))
+    ImmutableList.of(new LocalSourceLocator(new File("/path/to/source/code")))
 ));
 ```
 
-You can specify multiple locators in the list (later ones are used as fallbacks if earlier ones cannot find a file). If this is still not specific enough for you, you can implement your own `SourceLocator` to find the files and provide that to the handler.
+You can specify multiple locators in the list (later ones are used as fallbacks if earlier ones cannot find a file). If this is still not specific enough for you, you can implement your own `SourceLocator` to find the files and provide that to the handler. This could even fetch files over the network if needed.
 
 ## Notes:
 

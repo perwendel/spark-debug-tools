@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>${basic_type}</title>
+    <title>${exceptions?first.basic_type}</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#CC2222">
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div id="spark-header">
-    <h1>Spark Framework Debug</h1>
+    <h1>Spark Framework: <span style="font-style: normal;">Uncaught Exception<span></h1>
     <ul>
         <li><a href="http://sparkjava.com/documentation.html" target="_blank">View Documentation</a></li>
         <li><a href="https://sparktutorials.github.io/" target="_blank">View Tutorials</a></li>
@@ -27,68 +27,85 @@
 </div>
 <div class="container">
     <div class="stack-container">
-        <div class="left-panel cf <#if !frames?has_content>empty</#if>">
-            <header>
-                <div class="exception">
-                    <div class="exc-title">
-                        <#list name as namePart><span>${namePart}</span></#list>
-                    </div>
-                    <p class="exc-message">
-                        <#if message == "">No Exception Message<#else>${message}</#if>
-                    </p>
-                </div>
-            </header>
-            <div id="exc-btns">
-                <button id="copy-button" class="clipboard" data-clipboard-text="${plain_exception}" title="Copy exception details to clipboard">
-                    Copy stacktrace
-                </button>
-                <button id="google-button" data-google-query="<#list name as namePart>${namePart}<#if !namePart?is_last>+</#if></#list>" title="Google this exception">
-                    Google exception
-                </button>
-            </div>
-            <div class="frames-description">Stack frames (${frames?size}):</div>
-            <div class="frames-container">
-                <#assign found = false>
-                <#list frames as frame>
-                    <div class="frame<#if frame.code??> has-code<#if !found> active<#assign found = true></#if></#if>" id="frame-line-${frame?index}">
-                        <div class="frame-method-info">
-                            <span class="frame-index">${frames?size - frame?counter}</span>
-                            <span class="frame-class">${frame.class}</span>
-                            <span class="frame-function">${frame.function}</span>
-                        </div>
-                        <span class="frame-file">${frame.file}<#if frame.line != "-1"><span class="frame-line">${frame.line}</span></#if></span>
-                    </div>
-                </#list>
-            </div>
-        </div>
-        <div class="details-container cf">
-            <div class="frame-code-container <#if !frames?has_content>empty</#if>">
-                <#assign found = false>
-                <#list frames as frame>
-                    <div class="frame-code<#if frame.code??> has-code<#if !found> active<#assign found = true></#if></#if>" id="frame-code-${frame?index}">
-                        <div class="frame-file">
-                            <strong>${frame.file}</strong>
-                            <#if frame.canonical_path??>
-                                (${frame.canonical_path})
+        <div class="left-panel cf">
+            <#assign first = true>
+            <#list exceptions as exception>
+                <div class="exception-container">
+                    <#if !first>
+                        <div class="exception-separator">
+                            <#if exception.suppressed>
+                                Suppressed:
+                            <#else>
+                                Caused By:
                             </#if>
                         </div>
-                        <#if frame.code??>
-                            <pre class="code-block prettyprint linenums:${frame.code_start}"><code class="language-java">${frame.code}</code></pre>
-                        </#if>
-                        <div class="frame-comments <#if !frame.comments?has_content>empty</#if>">
-                        <#--<#list 0..frames[i].comments?size-1 as commentNo>
-                          <#assign comment = frames[i].comments[commentNo]>
-                          <div class="frame-comment" id="comment-${i}-${commentNo}">
-                            <span class="frame-comment-context">${comment.context}</span>
-                            ${comment.text}
-                          </div>
-                        </#list>-->
+                    </#if>
+                    <header>
+                        <div class="exception">
+                            <div class="exc-title">
+                                <#list exception.name as namePart><span>${namePart}</span></#list>
+                            </div>
+                            <p class="exc-message">
+                                <#if exception.message == "">No Exception Message<#else>${exception.short_message}</#if>
+                            </p>
                         </div>
+                    </header>
+                    <div class="frames-description">Stack Frames (${exception.frames?size}):</div>
+                    <div class="frames-container">
+                        <#list exception.frames as frame>
+                            <div class="frame<#if frame.code??> has-code</#if>" id="frame-line-${exception?index}-${frame?index}">
+                                <div class="frame-method-info">
+                                    <span class="frame-index">${exception.frames?size - frame?counter}</span>
+                                    <span class="frame-class">${frame.class}</span>
+                                    <span class="frame-function">${frame.function}</span>
+                                </div>
+                                <span class="frame-file">${frame.file}<#if frame.line != "-1"><span class="frame-line">${frame.line}</span></#if></span>
+                            </div>
+                        </#list>
                     </div>
-                </#list>
-            </div>
+                    <#assign first = false>
+                </div>
+            </#list>
+        </div>
+        <div class="details-container cf">
+            <#list exceptions as exception>
+                <div class="exception-container">
+                    <div class="frame-code-container">
+                        <#list exception.frames as frame>
+                            <div class="frame-code<#if frame.code??> has-code</#if>" id="frame-code-${exception?index}-${frame?index}">
+                                <div class="frame-file">
+                                    <strong>${frame.file}</strong>
+                                    <#if frame.canonical_path??>
+                                        (${frame.canonical_path})
+                                    </#if>
+                                </div>
+                                <#if frame.code??>
+                                    <pre class="code-block prettyprint linenums:${frame.code_start}"><code class="language-java">${frame.code}</code></pre>
+                                </#if>
+                                <div class="frame-comments <#if !frame.comments?has_content>empty</#if>">
+                                <#--<#list 0..frames[i].comments?size-1 as commentNo>
+                                  <#assign comment = frames[i].comments[commentNo]>
+                                  <div class="frame-comment" id="comment-${i}-${commentNo}">
+                                    <span class="frame-comment-context">${comment.context}</span>
+                                    ${comment.text}
+                                  </div>
+                                </#list>-->
+                                </div>
+                            </div>
+                        </#list>
+                    </div>
+                </div>
+            </#list>
             <div class="details">
                 <div class="data-table-container" id="data-tables">
+                    <!-- Print Long Stack Trace -->
+                    <#if exceptions?first.show_full_trace>
+                        <div class="data-table">
+                            <h3>Detailed Message</h3>
+                            <pre style="white-space: pre-wrap;">${exceptions?first.full_trace}</pre>
+                        </div>
+                    </#if>
+                    <!-- Print Tables -->
                     <#list tables?keys as label>
                         <#assign data = tables[label]>
                         <div class="data-table">
@@ -104,7 +121,7 @@
                                     <#list data?keys as k>
                                         <tr>
                                             <td><div>${k}</div></td>
-                                            <td><div>${data[k]}</div></td>
+                                            <td><div>${data[k]!""}</div></td>
                                         </tr>
                                     </#list>
                                 </table>
@@ -114,12 +131,6 @@
                         </div>
                     </#list>
                 </div>
-                <!--<div class="data-table-container" id="handlers">
-                  <label>Registered Handlers</label>
-                    <div class="handler active">
-                      1. SomeHandler
-                    </div>
-                </div>-->
             </div>
         </div>
     </div>
@@ -130,6 +141,7 @@
     It was ported by
     <a href="https://github.com/mschurr" target="_blank">Matthew Schurr</a>.
 </div>
+<script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_jquery.min.js"></script>
 <script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_zepto.min.js"></script>
 <script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_prettify.min.js"></script>
 <script><#include "/public/sparkdebugtools/js/lib/sparkdebugtools_clipboard.min.js"></script>
