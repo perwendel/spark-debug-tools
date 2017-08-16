@@ -27,16 +27,19 @@ import com.google.common.collect.ImmutableMap;
 
 import static spark.Spark.exception;
 
-public class DebugScreen implements ExceptionHandler {
+public class DebugScreen implements ExceptionHandler<Exception> {
+
+    private static final SourceLocator[] DEFAULT_LOCATORS = {
+            new FileSearchSourceLocator("./src/main/java"),
+            new FileSearchSourceLocator("./src/test/java")
+    };
+
     protected final FreeMarkerEngine templateEngine;
     protected final Configuration templateConfig;
     protected final SourceLocator[] sourceLocators;
 
     public DebugScreen() {
-        this(
-                new FileSearchSourceLocator("./src/main/java"),
-                new FileSearchSourceLocator("./src/test/java")
-        );
+        this(DEFAULT_LOCATORS);
     }
 
     public DebugScreen(SourceLocator... sourceLocators) {
@@ -52,7 +55,7 @@ public class DebugScreen implements ExceptionHandler {
      * using the default source locators (src/main/java and src/test/java)
      */
     public static void enableDebugScreen() {
-        exception(Exception.class, new DebugScreen());
+        enableDebugScreen(DEFAULT_LOCATORS);
     }
 
     /**
@@ -63,6 +66,25 @@ public class DebugScreen implements ExceptionHandler {
      */
     public static void enableDebugScreen(SourceLocator... sourceLocators) {
         exception(Exception.class, new DebugScreen(sourceLocators));
+    }
+
+    /**
+     * Enables the debug screen to catch any exception (Exception.class)
+     * using user defined source locators on the supplied service
+     *
+     */
+    public static void enableDebugScreen(spark.Service service) {
+        enableDebugScreen(service, DEFAULT_LOCATORS);
+    }
+
+    /**
+     * Enables the debug screen to catch any exception (Exception.class)
+     * using user defined source locators
+     *
+     * @param sourceLocators locators to use to find source files
+     */
+    public static void enableDebugScreen(spark.Service service, SourceLocator... sourceLocators) {
+        service.exception(Exception.class, new DebugScreen(sourceLocators));
     }
 
     @Override
