@@ -34,6 +34,49 @@ public class DebugScreenExample {
     <version>0.5</version>
 </dependency>
 ```
+
+This project depends on the following maven libraries, please include their dependencies in your pom.xml file
+
+```
+<dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.4</version>
+</dependency>
+<dependency>
+	<groupId>com.sparkjava</groupId>
+	<artifactId>spark-template-freemarker</artifactId>
+	<version>2.7.1</version>
+	<exclusions>
+		<exclusion>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+		</exclusion>
+	</exclusions>
+</dependency>
+<dependency>
+	<groupId>com.google.guava</groupId>
+	<artifactId>guava</artifactId>
+	<version>18.0</version>
+</dependency>
+<dependency>
+	<groupId>org.apache.commons</groupId>
+	<artifactId>commons-lang3</artifactId>
+	<version>3.0</version>
+</dependency>
+<dependency>
+	<groupId>org.freemarker</groupId>
+	<artifactId>freemarker</artifactId>
+	<version>2.3.28</version>
+</dependency>
+<dependency>
+	<groupId>org.slf4j</groupId>
+	<artifactId>slf4j-api</artifactId>
+	<version>1.7.25</version>
+</dependency>
+
+```
+
 ## Advanced Usage:
 
 **To add additional tables:**
